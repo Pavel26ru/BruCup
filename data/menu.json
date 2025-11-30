@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "name": "Эспрессо",
+    "volumes": [
+      { "volume": "50мл", "price": 100 }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Американо",
+    "volumes": [
+      { "volume": "250мл", "price": 150 },
+      { "volume": "350мл", "price": 190 }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Капучино",
+    "volumes": [
+      { "volume": "250мл", "price": 170 },
+      { "volume": "350мл", "price": 210 }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Латте",
+    "volumes": [
+      { "volume": "250мл", "price": 180 },
+      { "volume": "350мл", "price": 220 }
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Флэт уайт",
+    "volumes": [
+      { "volume": "200мл", "price": 200 }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Раф",
+    "volumes": [
+      { "volume": "300мл", "price": 250 }
+    ]
+  }
+]
