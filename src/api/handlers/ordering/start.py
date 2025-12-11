@@ -36,7 +36,7 @@ async def cmd_start(message: types.Message, user_service: UserService):
 
     welcome_message = (
         f"Привет, {user.first_name}! 👋\n"
-        "Вы в кофейне [Название].\n" # Placeholder for coffee shop name
+        "Вы в кофейне <b>Bru Cup</b>.\n" # Placeholder for coffee shop name
         "Здесь можно заказать кофе заранее — мы приготовим его к вашему приходу!\n\n"
         "Выберите, что хотите сделать:"
     )

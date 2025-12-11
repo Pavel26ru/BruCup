@@ -1,5 +1,6 @@
 import os
 import json
+from datetime import datetime, timedelta
 from aiogram import F, Router, Bot, types
 from aiogram.filters.callback_data import CallbackData
 from aiogram.fsm.context import FSMContext
@@ -10,6 +11,7 @@ from src.application.services.product_service import ProductService
 from src.application.services.order_service import OrderService
 from src.application.states import Order
 from src.application.time_utils import parse_pickup_time, is_valid_pickup_time
+from src.api.handlers.admin.actions import AdminActionCallback
 
 # --- CallbackData ---
 class LocationCallback(CallbackData, prefix="location"):
@@ -29,11 +31,6 @@ class OptionCallback(CallbackData, prefix="option"):
 
 class QuantityCallback(CallbackData, prefix="quantity"):
     count: int
-
-class AdminActionCallback(CallbackData, prefix="admin"):
-    action: str
-    user_id: int
-    order_id: str # A unique identifier for the order
 
 # --- Router ---
 menu_router = Router()
@@ -179,8 +176,11 @@ async def cq_select_syrup(callback: types.CallbackQuery, callback_data: OptionCa
 async def cq_select_quantity(callback: types.CallbackQuery, callback_data: QuantityCallback, state: FSMContext):
     await state.update_data(quantity=callback_data.count)
     await state.set_state(Order.entering_pickup_time)
+    order_time = datetime.now()
+    min_ready_time = order_time + timedelta(minutes=10)
 
-    text = "На какое время приготовить ваш напиток?\nНапишите ответ сообщением, например: <b>к 08:40</b> или <b>через 10 минут</b>."
+    text = (f"На какое время приготовить ваш напиток?\nНапишите ответ сообщением, например: <b>к 08:40</b> или <b>через 10 минут</b>."
+            f"\nне ранее {min_ready_time}")
     await callback.message.edit_text(text, parse_mode="HTML")
     await callback.answer()
 
@@ -206,14 +206,26 @@ async def handle_pickup_time(message: types.Message, state: FSMContext, product_
 @menu_router.callback_query(Order.confirming_order, F.data == "confirm_order")
 async def cq_confirm_order(callback: types.CallbackQuery, state: FSMContext, bot: Bot, product_service: ProductService, option_service: OptionService, order_service: OrderService):
     user_data = await state.get_data()
+    
+    # Add user_id to the order data
+    user_data['user_id'] = callback.from_user.id
+
+    # Create the order in the database
+    try:
+        new_order = await order_service.create_order(user_data)
+        order_id_for_admin = str(new_order.id)
+    except Exception as e:
+        # Log the error, maybe notify the user
+        await callback.answer("Произошла ошибка при создании заказа. Пожалуйста, попробуйте снова.", show_alert=True)
+        # You might want to log 'e' here
+        return
+
     admin_id = user_data.get("admin_id")
     summary_for_admin = await build_order_summary(state, product_service, option_service, order_service)
     
-    order_id = f"{callback.from_user.id}_{callback.message.message_id}"
-
     if admin_id:
         admin_keyboard = InlineKeyboardBuilder()
-        admin_keyboard.add(types.InlineKeyboardButton(text="✅ Готов", callback_data=AdminActionCallback(action="done", user_id=callback.from_user.id, order_id=order_id).pack()))
+        admin_keyboard.add(types.InlineKeyboardButton(text="✅ Готов", callback_data=AdminActionCallback(action="done", user_id=callback.from_user.id, order_id=order_id_for_admin).pack()))
         
         await bot.send_message(
             chat_id=admin_id,
@@ -222,24 +234,9 @@ async def cq_confirm_order(callback: types.CallbackQuery, state: FSMContext, bot
             parse_mode="HTML"
         )
     
-    await callback.message.edit_text(f"Ваш заказ принят! Мы приготовим его к {user_data.get('pickup_time')}. Как только кофе будет готов - пришлём уведомление.", parse_mode="HTML")
+    await callback.message.edit_text(f"Ваш заказ #{new_order.id} принят! Мы приготовим его к {user_data.get('pickup_time')}. Как только кофе будет готов - пришлём уведомление.", parse_mode="HTML")
     await callback.answer()
     await state.clear()
-
-@menu_router.callback_query(AdminActionCallback.filter(F.action == "done"))
-async def cq_admin_order_done(callback: types.CallbackQuery, callback_data: AdminActionCallback, bot: Bot):
-    await callback.message.edit_text(f"{callback.message.text}\n\n✅ Заказ выполнен!", parse_mode="HTML")
-    
-    try:
-        await bot.send_message(
-            chat_id=callback_data.user_id,
-            text="Ваш кофе готов! ☕️✨\nЖдём вас ❤️"
-        )
-    except Exception as e:
-        await callback.answer(f"Не удалось уведомить пользователя: {e}", show_alert=True)
-    
-    await callback.answer("Заказ отмечен как выполненный.")
-
 
 @menu_router.callback_query(F.data == "back_to_main_menu")
 async def cq_back_to_main_menu(callback: types.CallbackQuery, state: FSMContext):

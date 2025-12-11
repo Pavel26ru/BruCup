@@ -1,40 +1,57 @@
-from typing import Dict, Optional
-from src.domain.entities.user import User
+from typing import Optional
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+from src.domain.entities.user import User as DomainUser
 from src.domain.repositories.user_repository import AbstractUserRepository
+from src.infrastructure.database.models.user import User as ORMUser
 
-class InMemoryUserRepository(AbstractUserRepository):
+class SQLAlchemyUserRepository(AbstractUserRepository):
     """
-    Temporary in-memory implementation of AbstractUserRepository for development/testing.
-    This will be replaced by a proper MySQL implementation using an ORM like SQLAlchemy.
+    SQLAlchemy implementation of the User Repository.
     """
-    def __init__(self):
-        self._users: Dict[int, User] = {} # Stores user_id -> User object
+    def __init__(self, session: AsyncSession):
+        self.session = session
 
-    async def get_by_id(self, user_id: int) -> Optional[User]:
-        """
-        Retrieves a user by their unique ID from in-memory storage.
-        """
-        return self._users.get(user_id)
+    async def get_by_id(self, user_id: int) -> Optional[DomainUser]:
+        stmt = select(ORMUser).where(ORMUser.id == user_id)
+        orm_user = (await self.session.execute(stmt)).scalar_one_or_none()
+        if orm_user:
+            return DomainUser(
+                id=orm_user.id,
+                username=orm_user.username,
+                first_name=orm_user.first_name,
+                last_name=orm_user.last_name,
+                is_admin=orm_user.is_admin,
+                created_at=orm_user.created_at,
+                updated_at=orm_user.updated_at
+            )
+        return None
 
-    async def add(self, user: User) -> None:
-        """
-        Adds a new user to in-memory storage.
-        """
-        if user.id in self._users:
-            raise ValueError(f"User with ID {user.id} already exists.")
-        self._users[user.id] = user
+    async def add(self, user: DomainUser) -> None:
+        orm_user = ORMUser(
+            id=user.id,
+            username=user.username,
+            first_name=user.first_name,
+            last_name=user.last_name,
+            is_admin=user.is_admin
+        )
+        self.session.add(orm_user)
+        await self.session.commit()
 
-    async def update(self, user: User) -> None:
-        """
-        Updates an existing user's information in in-memory storage.
-        """
-        if user.id not in self._users:
-            raise ValueError(f"User with ID {user.id} does not exist.")
-        self._users[user.id] = user
+    async def update(self, user: DomainUser) -> None:
+        orm_user = await self.session.get(ORMUser, user.id)
+        if orm_user:
+            orm_user.username = user.username
+            orm_user.first_name = user.first_name
+            orm_user.last_name = user.last_name
+            orm_user.is_admin = user.is_admin
+            # updated_at is handled by TimestampMixin
+            await self.session.commit()
+        else:
+            raise ValueError(f"User with ID {user.id} not found for update.")
 
     async def delete(self, user_id: int) -> None:
-        """
-        Deletes a user from in-memory storage by their ID.
-        """
-        if user_id in self._users:
-            del self._users[user_id]
+        orm_user = await self.session.get(ORMUser, user_id)
+        if orm_user:
+            await self.session.delete(orm_user)
+            await self.session.commit()
