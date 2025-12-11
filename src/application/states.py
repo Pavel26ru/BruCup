@@ -13,3 +13,10 @@ class Order(StatesGroup):
     entering_pickup_time = State()
     choosing_payment_method = State()
     confirming_order = State()
+
+class Broadcast(StatesGroup):
+    """
+    States for the broadcast process.
+    """
+    waiting_for_message = State()
+    confirming_broadcast = State()

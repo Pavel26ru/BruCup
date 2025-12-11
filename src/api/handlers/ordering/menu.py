@@ -97,7 +97,15 @@ async def cq_select_location(callback: types.CallbackQuery, callback_data: Locat
 @menu_router.callback_query(Order.choosing_product, ProductCallback.filter())
 async def cq_select_product(callback: types.CallbackQuery, callback_data: ProductCallback, state: FSMContext, product_service: ProductService):
     await state.set_state(Order.choosing_volume)
-    await state.update_data(product_id=callback_data.id)
+    # Reset subsequent choices
+    await state.update_data(
+        product_id=callback_data.id,
+        volume=None,
+        milk_id=None,
+        syrup_id=None,
+        quantity=None,
+        pickup_time=None
+    )
 
     product = await product_service.get_product_by_id(callback_data.id)
     if not product:
@@ -121,7 +129,13 @@ async def cq_select_product(callback: types.CallbackQuery, callback_data: Produc
 @menu_router.callback_query(Order.choosing_volume, VolumeCallback.filter())
 async def cq_select_volume(callback: types.CallbackQuery, callback_data: VolumeCallback, state: FSMContext, option_service: OptionService):
     await state.set_state(Order.choosing_milk)
-    await state.update_data(volume=callback_data.volume)
+    await state.update_data(
+        volume=callback_data.volume,
+        milk_id=None,
+        syrup_id=None,
+        quantity=None,
+        pickup_time=None
+    )
 
     milk_options = await option_service.get_options_by_category("milk")
     builder = InlineKeyboardBuilder()
@@ -140,7 +154,12 @@ async def cq_select_volume(callback: types.CallbackQuery, callback_data: VolumeC
 @menu_router.callback_query(Order.choosing_milk, OptionCallback.filter(F.category == "milk"))
 async def cq_select_milk(callback: types.CallbackQuery, callback_data: OptionCallback, state: FSMContext, option_service: OptionService):
     await state.set_state(Order.choosing_syrup)
-    await state.update_data(milk_id=callback_data.item_id if callback_data.item_id != 0 else None)
+    await state.update_data(
+        milk_id=callback_data.item_id if callback_data.item_id != 0 else None,
+        syrup_id=None,
+        quantity=None,
+        pickup_time=None
+    )
 
     syrup_options = await option_service.get_options_by_category("syrups")
     builder = InlineKeyboardBuilder()
@@ -158,7 +177,11 @@ async def cq_select_milk(callback: types.CallbackQuery, callback_data: OptionCal
 
 @menu_router.callback_query(Order.choosing_syrup, OptionCallback.filter(F.category == "syrup"))
 async def cq_select_syrup(callback: types.CallbackQuery, callback_data: OptionCallback, state: FSMContext):
-    await state.update_data(syrup_id=callback_data.item_id if callback_data.item_id != 0 else None)
+    await state.update_data(
+        syrup_id=callback_data.item_id if callback_data.item_id != 0 else None,
+        quantity=None,
+        pickup_time=None
+    )
     await state.set_state(Order.choosing_quantity)
 
     builder = InlineKeyboardBuilder()
@@ -174,7 +197,7 @@ async def cq_select_syrup(callback: types.CallbackQuery, callback_data: OptionCa
 
 @menu_router.callback_query(Order.choosing_quantity, QuantityCallback.filter())
 async def cq_select_quantity(callback: types.CallbackQuery, callback_data: QuantityCallback, state: FSMContext):
-    await state.update_data(quantity=callback_data.count)
+    await state.update_data(quantity=callback_data.count, pickup_time=None)
     await state.set_state(Order.entering_pickup_time)
     order_time = datetime.now()
     min_ready_time = order_time + timedelta(minutes=10)

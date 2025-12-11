@@ -45,3 +45,10 @@ class AbstractUserRepository(ABC):
             user_id (int): The unique identifier of the user to delete.
         """
         raise NotImplementedError
+
+    @abstractmethod
+    async def get_all(self) -> list[User]:
+        """
+        Retrieves all users from the storage.
+        """
+        raise NotImplementedError

@@ -72,3 +72,9 @@ class UserService:
         """
         user.updated_at = datetime.now()
         await self.user_repository.update(user)
+
+    async def get_all_users(self) -> list[DomainUser]:
+        """
+        Retrieves all users.
+        """
+        return await self.user_repository.get_all()

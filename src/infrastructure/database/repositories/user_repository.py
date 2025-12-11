@@ -55,3 +55,23 @@ class SQLAlchemyUserRepository(AbstractUserRepository):
         if orm_user:
             await self.session.delete(orm_user)
             await self.session.commit()
+
+    async def get_all(self) -> list[DomainUser]:
+        """
+        Retrieves all users from the database.
+        """
+        stmt = select(ORMUser)
+        result = await self.session.execute(stmt)
+        orm_users = result.scalars().all()
+        return [
+            DomainUser(
+                id=orm_user.id,
+                username=orm_user.username,
+                first_name=orm_user.first_name,
+                last_name=orm_user.last_name,
+                is_admin=orm_user.is_admin,
+                created_at=orm_user.created_at,
+                updated_at=orm_user.updated_at
+            )
+            for orm_user in orm_users
+        ]
