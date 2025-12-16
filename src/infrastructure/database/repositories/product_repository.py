@@ -15,20 +15,26 @@ class InMemoryProductRepository(AbstractProductRepository):
             file_path (str): The path to the menu.json file.
         """
         self._products: Dict[int, Product] = {}
+        self._categories: Dict[str, List[Product]] = {} # New: store products by category
         self._load_data(file_path)
 
     def _load_data(self, file_path: str):
-        """Loads product data from a JSON file into memory."""
+        """Loads product data from a JSON file into memory, handling categories."""
         try:
             with open(file_path, 'r', encoding='utf-8') as f:
                 data = json.load(f)
-                for item in data:
-                    product = Product.from_dict(item)
-                    self._products[product.id] = product
+                for category_item in data:
+                    # Each category_item is a dict like {"CategoryName": [product_list]}
+                    for category_name, products_list in category_item.items():
+                        self._categories[category_name] = [] # Initialize list for the category
+                        for item_data in products_list:
+                            product = Product.from_dict(item_data)
+                            self._products[product.id] = product
+                            self._categories[category_name].append(product)
         except (FileNotFoundError, json.JSONDecodeError) as e:
-            # In a real application, you'd want better error handling/logging
             print(f"Error loading menu data: {e}")
             self._products = {}
+            self._categories = {}
 
     async def get_all(self) -> List[Product]:
         """
@@ -41,4 +47,16 @@ class InMemoryProductRepository(AbstractProductRepository):
         Retrieves a product by its unique ID from in-memory storage.
         """
         return self._products.get(product_id)
+
+    async def get_categories(self) -> List[str]:
+        """
+        Retrieves all product category names.
+        """
+        return list(self._categories.keys())
+
+    async def get_products_by_category(self, category_name: str) -> List[Product]:
+        """
+        Retrieves all products within a specific category.
+        """
+        return self._categories.get(category_name, [])
 

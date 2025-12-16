@@ -1,0 +1,15 @@
+.git
+.idea
+__pycache__
+venv
+.DS_Store
+*.pyc
+*.log
+.env
+README.md
+ТЗ/
+project_structure.md
+tasks.md
+img.png
+.gitignore
+tests/

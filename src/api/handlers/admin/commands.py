@@ -76,11 +76,29 @@ async def complete_order_command(message: types.Message, command: CommandObject,
         await message.answer(f"Не удалось обновить статус заказа #{order_id}.")
         return
 
+    # Notify the user
     try:
+        # Send the "order ready" message
         await bot.send_message(
             chat_id=order.user_id,
             text=f"Ваш заказ #{order.id} готов! ☕️✨\nЖдём вас ❤️"
         )
+        
+        # Build the main menu keyboard
+        main_menu_builder = InlineKeyboardBuilder()
+        main_menu_builder.add(types.InlineKeyboardButton(text="Сделать заказ ☕", callback_data="place_order"))
+        main_menu_builder.add(types.InlineKeyboardButton(text="Меню 📖", callback_data="show_menu"))
+        main_menu_builder.add(types.InlineKeyboardButton(text="Режим работы ⏰", callback_data="working_hours"))
+        main_menu_builder.add(types.InlineKeyboardButton(text="Программа лояльности ❤️", callback_data="loyalty_program"))
+        main_menu_builder.adjust(1)
+        
+        # Send a new message with the main menu
+        await bot.send_message(
+            chat_id=order.user_id,
+            text="Чем я могу еще помочь?",
+            reply_markup=main_menu_builder.as_markup()
+        )
+
         await message.answer(f"Заказ #{order_id} отмечен как выполненный. Пользователь уведомлен.")
     except Exception as e:
         await message.answer(f"Заказ #{order_id} отмечен как выполненный, но не удалось уведомить пользователя: {e}")
@@ -181,7 +199,7 @@ async def broadcast_confirm(callback: types.CallbackQuery, state: FSMContext, bo
         except Exception:
             failed_count += 1
     
-    await callback.message.answer(f"✅ Рассылка завершена!\n\n"
+    await callback.message.answer(f"✅ Рассылка завершена!\n\n" 
                                 f"Успешно отправлено: {sent_count}\n"
                                 f"Не удалось отправить: {failed_count}")
     await callback.answer()

@@ -1,47 +1,583 @@
 [
-  {
+  {"Classic":  [
+    {
     "id": 1,
-    "name": "Эспрессо",
+    "name": "Двойной Эспрессо",
     "volumes": [
-      { "volume": "50мл", "price": 100 }
+      { "volume": "40мл", "price": 190 }
     ]
   },
   {
     "id": 2,
     "name": "Американо",
     "volumes": [
-      { "volume": "250мл", "price": 150 },
-      { "volume": "350мл", "price": 190 }
+      { "volume": "250мл", "price": 190 },
+      { "volume": "350мл", "price": 240 }
     ]
   },
   {
     "id": 3,
     "name": "Капучино",
     "volumes": [
-      { "volume": "250мл", "price": 170 },
-      { "volume": "350мл", "price": 210 }
+      { "volume": "250мл", "price": 210 },
+      { "volume": "350мл", "price": 250 },
+      { "volume": "450мл", "price": 290 },
+      { "volume": "650мл", "price": 380 }
     ]
   },
   {
     "id": 4,
     "name": "Латте",
     "volumes": [
-      { "volume": "250мл", "price": 180 },
-      { "volume": "350мл", "price": 220 }
+      { "volume": "350мл", "price": 250 },
+      { "volume": "450мл", "price": 290 },
+      { "volume": "650мл", "price": 380 }
     ]
   },
   {
     "id": 5,
     "name": "Флэт уайт",
     "volumes": [
-      { "volume": "200мл", "price": 200 }
+      { "volume": "250мл", "price": 230 }
     ]
   },
   {
     "id": 6,
     "name": "Раф",
     "volumes": [
-      { "volume": "300мл", "price": 250 }
+      { "volume": "250мл", "price": 250 },
+      { "volume": "350мл", "price": 290 },
+      { "volume": "450мл", "price": 330 },
+      { "volume": "650мл", "price": 420 }
+    ]
+  },
+  {
+    "id": 7,
+    "name": "Мокачино",
+    "volumes": [
+      { "volume": "350мл", "price": 290 }
     ]
   }
+  ]
+    },
+  {"No_coffe": [
+    {
+      "id": 10,
+      "name": "Какао",
+      "volumes": [
+        { "volume": "250мл", "price": 190 },
+        { "volume": "350мл", "price": 220 },
+        { "volume": "450мл", "price": 250 }
+      ]
+    },
+    {
+      "id": 11,
+      "name": "Горячий шоколад",
+      "volumes": [
+        { "volume": "250мл", "price": 220 },
+        { "volume": "350мл", "price": 250 },
+        { "volume": "450мл", "price": 270 }
+      ]
+    },
+    {
+      "id": 12,
+      "name": "Матча",
+      "volumes": [
+        { "volume": "350мл", "price": 230 },
+        { "volume": "450мл", "price": 260 }
+      ]
+    },
+    {
+      "id": 13,
+      "name": "Айс Матча",
+      "volumes": [
+        { "volume": "350мл", "price": 240 },
+        { "volume": "450мл", "price": 270 }
+      ]
+    }
+  ]
+    },
+  {"Alternative": [
+    {
+      "id": 14,
+      "name": "Батч-Брю",
+      "volumes": [
+        { "volume": "250мл", "price": 190 },
+        { "volume": "350мл", "price": 230 },
+        { "volume": "450мл", "price": 270 }
+      ]
+    },
+    {
+      "id": 15,
+      "name": "Кофе по-восточному",
+      "volumes": [
+        { "volume": "450мл", "price": 170 }
+      ]
+    }
+  ]},
+  {"Ice_coffe": [
+    {
+      "id": 16,
+      "name": "Айс-Латте",
+      "volumes": [
+        { "volume": "350мл", "price": 260 },
+        { "volume": "450мл", "price": 290 },
+        { "volume": "650мл", "price": 380 }
+      ]
+    },
+    {
+      "id": 17,
+      "name": "Фредо Капучино",
+      "volumes": [
+        { "volume": "350мл", "price": 260 },
+        { "volume": "450мл", "price": 290 },
+        { "volume": "650мл", "price": 380 }
+      ]
+    },
+    {
+      "id": 18,
+      "name": "Айс-Раф",
+      "volumes": [
+        { "volume": "350мл", "price": 290 },
+        { "volume": "450мл", "price": 350 },
+        { "volume": "650мл", "price": 440 }
+      ]
+    },
+    {
+      "id": 19,
+      "name": "Айс-Американо",
+      "volumes": [
+        { "volume": "350мл", "price": 250 }
+      ]
+    },
+    {
+      "id": 20,
+      "name": "Айс-Дубай",
+      "volumes": [
+        { "volume": "350мл", "price": 450 },
+        { "volume": "450мл", "price": 590 },
+        { "volume": "650мл", "price": 750 }
+      ]
+    },
+    {
+      "id": 21,
+      "name": "Айс-Урбеч",
+      "volumes": [
+        { "volume": "350мл", "price": 360 },
+        { "volume": "450мл", "price": 480 },
+        { "volume": "650мл", "price": 630 }
+      ]
+    },
+    {
+      "id": 22,
+      "name": "Айс-Урбеч какао",
+      "volumes": [
+        { "volume": "350мл", "price": 390 }
+      ]
+    },
+    {
+      "id": 23,
+      "name": "Фраппучино",
+      "volumes": [
+        { "volume": "450мл", "price": 390 },
+        { "volume": "650мл", "price": 460 }
+      ]
+    },
+    {
+      "id": 24,
+      "name": "Бамбл",
+      "volumes": [
+        { "volume": "450мл", "price": 290 },
+        { "volume": "650мл", "price": 380 }
+      ]
+    },
+    {
+      "id": 25,
+      "name": "Бамбл на фреше",
+      "volumes": [
+        { "volume": "450мл", "price": 420 },
+        { "volume": "650мл", "price": 510 }
+      ]
+    },
+    {
+      "id": 26,
+      "name": "Эспрессо-Тоник",
+      "volumes": [
+        { "volume": "450мл", "price": 290 },
+        { "volume": "650мл", "price": 380 }
+      ]
+    },
+    {
+      "id": 27,
+      "name": "Эспрессо-Адреналин",
+      "volumes": [
+        { "volume": "450мл", "price": 350 },
+        { "volume": "650мл", "price": 430 }
+      ]
+    }
+  ]},
+  {"Signature_coffee": [
+    {
+      "id": 28,
+      "name": "Раф-Урбеч",
+      "volumes": [
+        { "volume": "350мл", "price": 350 }
+      ]
+    },
+    {
+      "id": 29,
+      "name": "Арахисовый Раф",
+      "volumes": [
+        { "volume": "350мл", "price": 370 }
+      ]
+    },
+    {
+      "id": 30,
+      "name": "Раф Халва",
+      "volumes": [
+        { "volume": "350мл", "price": 350 }
+      ]
+    },
+    {
+      "id": 31,
+      "name": "Малиновый Раф",
+      "volumes": [
+        { "volume": "350мл", "price": 350 }
+      ]
+    },
+    {
+      "id": 32,
+      "name": "Мистер Браун",
+      "volumes": [
+        { "volume": "350мл", "price": 290 }
+      ]
+    },
+    {
+      "id": 33,
+      "name": "Раф Черная Смородина",
+      "volumes": [
+        { "volume": "350мл", "price": 350 }
+      ]
+    },
+    {
+      "id": 34,
+      "name": "Раф Фисташка Малина",
+      "volumes": [
+        { "volume": "350мл", "price": 350 }
+      ]
+    }
+  ]},
+  {"Ice_Tea": [
+    {
+      "id": 35,
+      "name": "Манго-маракуйя",
+      "volumes": [
+        { "volume": "350мл", "price": 290 },
+        { "volume": "650мл", "price": 380 }
+      ]
+    },
+    {
+      "id": 36,
+      "name": "Клубника-манго",
+      "volumes": [
+        { "volume": "350мл", "price": 290 },
+        { "volume": "650мл", "price": 380 }
+      ]
+    },
+    {
+      "id": 37,
+      "name": "Малина-мята",
+      "volumes": [
+        { "volume": "350мл", "price": 290 },
+        { "volume": "650мл", "price": 380 }
+      ]
+    },
+    {
+      "id": 38,
+      "name": "Лесные ягоды",
+      "volumes": [
+        { "volume": "350мл", "price": 290 },
+        { "volume": "650мл", "price": 380 }
+      ]
+    }
+  ]},
+  {"Signature_Tea": [
+    {
+      "id": 39,
+      "name": "Витаминный чай",
+      "volumes": [
+        { "volume": "450", "price": 260 }
+      ]
+    },
+    {
+      "id": 40,
+      "name": "Облепиховый чай",
+      "volumes": [
+        { "volume": "450", "price": 250 }
+      ]
+    },
+    {
+      "id": 41,
+      "name": "Клубничный чай",
+      "volumes": [
+        { "volume": "450мл", "price": 230 }
+      ]
+    },
+    {
+      "id": 42,
+      "name": "Клубника-манго",
+      "volumes": [
+        { "volume": "450мл", "price": 270 }
+      ]
+    },
+    {
+      "id": 43,
+      "name": "Малина-мята",
+      "volumes": [
+        { "volume": "450мл", "price": 280 }
+      ]
+    },
+    {
+      "id": 44,
+      "name": "Лесные ягоды",
+      "volumes": [
+        { "volume": "450мл", "price": 280 }
+      ]
+    },
+    {
+      "id": 45,
+      "name": "Манго-маракуйя",
+      "volumes": [
+        { "volume": "450мл", "price": 270 }
+      ]
+    },
+    {
+      "id": 46,
+      "name": "Смородина-мята",
+      "volumes": [
+        { "volume": "450мл", "price": 270}
+      ]
+    },
+    {
+      "id": 47,
+      "name": "Гречишный чай",
+      "volumes": [
+        { "volume": "450мл", "price": 220 }
+      ]
+    }
+  ]},
+  {"Loose_leaf_tea": [
+    {
+      "id": 48,
+      "name": "Ассам Меленг",
+      "volumes": [
+        { "volume": "450мл", "price": 270 },
+        { "volume": "900мл", "price": 490 }
+      ]
+    },
+    {
+      "id": 49,
+      "name": "Эрл Грей",
+      "volumes": [
+        { "volume": "450мл", "price": 270 },
+        { "volume": "900мл", "price": 490 }
+      ]
+    },
+    {
+      "id": 50,
+      "name": "Горные травы",
+      "volumes": [
+        { "volume": "450мл", "price": 270 },
+        { "volume": "900мл", "price": 490 }
+      ]
+    },
+    {
+      "id": 51,
+      "name": "Жасмин",
+      "volumes": [
+        { "volume": "450мл", "price": 270 },
+        { "volume": "900мл", "price": 490 }
+      ]
+    },
+    {
+      "id": 52,
+      "name": "Грюн Матинэ",
+      "volumes": [
+        { "volume": "450мл", "price": 270 },
+        { "volume": "900мл", "price": 490 }
+      ]
+    },
+    {
+      "id": 53,
+      "name": "Молочный улун",
+      "volumes": [
+        { "volume": "450мл", "price": 270 },
+        { "volume": "900мл", "price": 490 }
+      ]
+    },
+    {
+      "id": 54,
+      "name": "Баварская мята",
+      "volumes": [
+        { "volume": "450мл", "price": 270 },
+        { "volume": "900мл", "price": 490 }
+      ]
+    }
+  ]},
+  {"Milkshake": [
+    {
+      "id": 55,
+      "name": "Ванильный",
+      "volumes": [
+        { "volume": "450мл", "price": 450 }
+      ]
+    },
+    {
+      "id": 56,
+      "name": "Клубничный",
+      "volumes": [
+        { "volume": "450мл", "price": 450 }
+      ]
+    },
+    {
+      "id": 57,
+      "name": "Клубника-банан",
+      "volumes": [
+        { "volume": "450мл", "price": 450 }
+      ]
+    },
+    {
+      "id": 58,
+      "name": "Орео",
+      "volumes": [
+        { "volume": "450мл", "price": 470 }
+      ]
+    }
+  ]},
+  {"Protein_shake": [
+    {
+      "id": 59,
+      "name": "Протеин классический",
+      "volumes": [
+        { "volume": "350мл", "price": 280 }
+      ]
+    },
+    {
+      "id": 60,
+      "name": "Мокко-шейк",
+      "volumes": [
+        { "volume": "350мл", "price": 390 }
+      ]
+    },
+    {
+      "id": 61,
+      "name": "Ягодный микс",
+      "volumes": [
+        { "volume": "350мл", "price": 380 }
+      ]
+    }
+  ]},
+  {"Fresh": [
+    {
+      "id": 62,
+      "name": "Апельсиновый фреш",
+      "volumes": [
+        { "volume": "350мл", "price": 370 }
+      ]
+    },
+    {
+      "id": 63,
+      "name": "Грейпфрутовый фреш",
+      "volumes": [
+        { "volume": "350мл", "price": 370 }
+      ]
+    },
+    {
+      "id": 64,
+      "name": "Гранатовый фреш",
+      "volumes": [
+        { "volume": "350мл", "price": 850 }
+      ]
+    }
+  ]},
+  {"Lemonade": [
+    {
+      "id": 64,
+      "name": "Мохито лайм/клубника",
+      "volumes": [
+        { "volume": "450мл", "price": 330 },
+        { "volume": "650мл", "price": 410 }
+      ]
+    },
+    {
+      "id": 65,
+      "name": "Цитрусовый",
+      "volumes": [
+        { "volume": "450мл", "price": 310 },
+        { "volume": "650мл", "price": 390 }
+      ]
+    },
+    {
+      "id": 66,
+      "name": "Лесные ягоды",
+      "volumes": [
+        { "volume": "450мл", "price": 290 },
+        { "volume": "650мл", "price": 380 }
+      ]
+    },
+    {
+      "id": 67,
+      "name": "Манго-маракуйя",
+      "volumes": [
+        { "volume": "450мл", "price": 290 },
+        { "volume": "650мл", "price": 380 }
+      ]
+    },
+    {
+      "id": 68,
+      "name": "Смородина-мята",
+      "volumes": [
+        { "volume": "450мл", "price": 310 },
+        { "volume": "650мл", "price": 390 }
+      ]
+    },
+    {
+      "id": 69,
+      "name": "Клубника-манго",
+      "volumes": [
+        { "volume": "450мл", "price": 290 },
+        { "volume": "650мл", "price": 380 }
+      ]
+    }
+  ]},
+  {"Shots": [
+   {
+    "id": 70,
+    "name": "Витаминный шот",
+    "volumes": [
+      { "volume": "50мл", "price": 380 }
+    ]
+    },
+    {
+      "id": 71,
+      "name": "Шот эспрессо-гранат",
+      "volumes": [
+        { "volume": "50мл", "price": 350 }
+      ]
+    },
+    {
+      "id": 72,
+      "name": "Шот экспрессо-апельсин",
+      "volumes": [
+        { "volume": "50мл", "price": 290 }
+      ]
+    },
+    {
+      "id": 70,
+      "name": "Викс шотов",
+      "volumes": [
+        { "volume": "50мл", "price": 590 }
+      ]
+    }
+  ]}
 ]

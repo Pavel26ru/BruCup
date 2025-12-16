@@ -1,5 +1,6 @@
 from aiogram import Router, types
-from aiogram.filters import CommandStart
+from aiogram.filters import CommandStart, StateFilter
+from aiogram.fsm.context import FSMContext
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from src.application.services.user_service import UserService
@@ -7,12 +8,14 @@ from src.application.services.user_service import UserService
 # Create a router for handling start command and general user interactions
 start_router = Router()
 
-@start_router.message(CommandStart())
-async def cmd_start(message: types.Message, user_service: UserService):
+@start_router.message(CommandStart(), StateFilter("*"))
+async def cmd_start(message: types.Message, user_service: UserService, state: FSMContext):
     """
     Handles the /start command.
     Registers or retrieves the user, and sends a welcome message with the appropriate menu (admin or user).
     """
+    await state.clear()
+    
     user_data = message.from_user
     if not user_data:
         # This case should ideally not happen for a /start command from a user
@@ -48,10 +51,10 @@ async def cmd_start(message: types.Message, user_service: UserService):
         welcome_message += "Выберите, что хотите сделать:"
         # Build the inline keyboard for the main menu
         builder = InlineKeyboardBuilder()
-        builder.add(types.InlineKeyboardButton(text="Сделать заказ ☕", callback_data="place_order"))
-        builder.add(types.InlineKeyboardButton(text="Меню 📖", callback_data="show_menu"))
-        builder.add(types.InlineKeyboardButton(text="Режим работы ⏰", callback_data="working_hours"))
-        builder.add(types.InlineKeyboardButton(text="Программа лояльности ❤️", callback_data="loyalty_program"))
+        builder.add(types.InlineKeyboardButton(text="☕ Сделать заказ ☕", callback_data="place_order"))
+        builder.add(types.InlineKeyboardButton(text="📖 Меню", callback_data="show_menu"))
+        builder.add(types.InlineKeyboardButton(text="🕖 Режим работы", callback_data="working_hours"))
+        builder.add(types.InlineKeyboardButton(text="💳 Бонусная карта️", callback_data="loyalty_program"))
         builder.adjust(1) # Display buttons in a single column
 
         await message.answer(

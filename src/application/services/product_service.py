@@ -31,3 +31,15 @@ class ProductService:
             Optional[Product]: The Product object if found, otherwise None.
         """
         return await self.product_repository.get_by_id(product_id)
+
+    async def get_categories(self) -> List[str]:
+        """
+        Retrieves all product categories.
+        """
+        return await self.product_repository.get_categories()
+
+    async def get_products_by_category(self, category_name: str) -> List[Product]:
+        """
+        Retrieves all products within a specific category.
+        """
+        return await self.product_repository.get_products_by_category(category_name)

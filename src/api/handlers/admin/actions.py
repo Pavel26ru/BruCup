@@ -1,6 +1,7 @@
 from aiogram import F, Router, Bot, types
 from aiogram.filters.callback_data import CallbackData
 from aiogram.exceptions import TelegramBadRequest
+from aiogram.utils.keyboard import InlineKeyboardBuilder
 from src.application.services.order_service import OrderService
 
 # This needs to be defined here or imported from a central place
@@ -43,12 +44,27 @@ async def cq_admin_order_done(callback: types.CallbackQuery, callback_data: Admi
             await callback.answer(f"Произошла ошибка: {e.message}", show_alert=True)
             return
 
-    # 2. Notify the user that their order is ready.
+    # 2. Notify the user that their order is ready and show the main menu.
     try:
         await bot.send_message(
             chat_id=callback_data.user_id,
             text="Ваш кофе готов! ☕️✨\nЖдём вас ❤️"
         )
+        
+        # Build the main menu keyboard
+        builder = InlineKeyboardBuilder()
+        builder.add(types.InlineKeyboardButton(text="Сделать заказ ☕", callback_data="place_order"))
+        builder.add(types.InlineKeyboardButton(text="Меню 📖", callback_data="show_menu"))
+        builder.add(types.InlineKeyboardButton(text="Режим работы ⏰", callback_data="working_hours"))
+        builder.add(types.InlineKeyboardButton(text="Программа лояльности ❤️", callback_data="loyalty_program"))
+        builder.adjust(1) # Display buttons in a single column
+
+        await bot.send_message(
+            chat_id=callback_data.user_id,
+            text="Что-нибудь еще?",
+            reply_markup=builder.as_markup()
+        )
+        
     except Exception as e:
         await callback.answer(f"Не удалось уведомить пользователя: {e}", show_alert=True)
         return

@@ -5,6 +5,7 @@ class Order(StatesGroup):
     States for the ordering process.
     """
     choosing_location = State()
+    choosing_category = State() # New state
     choosing_product = State()
     choosing_volume = State()
     choosing_milk = State()

@@ -20,5 +20,16 @@ services:
     ports:
       - 8080:8080
 
+  bot:
+    build: .
+    container_name: bru_cup_bot
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - DB_HOST=db
+    depends_on:
+      - db
+
 volumes:
   mysql_data:
